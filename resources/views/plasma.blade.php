@@ -17,13 +17,18 @@
         padding: 0;
      height: 100%;
       }
+      .custom-col {
+            flex: 0 0 auto;
+            width: 20%; /* Anda bisa menyesuaikan lebar ini */
+      }
     </style>
      <style>
-        .carousel-custom {
-          width: 100%;
-          max-width: 600px; /* Ganti dengan lebar maksimal yang diinginkan */
-          margin: auto; /* Center alignment */
-        }
+       .carousel-custom {
+  width: 140%;
+  max-width: 800px;
+  margin-left: -20%; /* Sesuaikan nilai ini sesuai kebutuhan untuk menggeser ke kiri */
+  margin-right: auto; /* Menjaga elemen tetap terpusat pada bagian kanan */
+}
       </style>
   </head>
   <body>
@@ -44,12 +49,12 @@
     <div class="container-fluid px-3 mt-1 position-relative" style="min-height:91vh !important; padding-bottom:100px;">
         <div class="row">
           <!-- Antrian Loket -->
-          <div class="col-md-6">
+          <div class="col-md-auto custom-col">
             <div class="card text-center mb-3">
               @if (!$loket1->count())
                 <h5>Belum Ada Antrian</h5>
               @else
-                <h5 class="card-header bg-primary text-white">ANTRIAN {{ strtoupper($loket1[0]->loket->deskripsi) }}</h5>
+                <h5 class="card-header bg-primary text-white">{{ strtoupper($loket1[0]->loket->deskripsi) }}</h5>
                 <div class="card-body">
                   <h5 class="card-title">Nomor Antrian</h5>
                   <h1 class="card-text" id="loket1-antrian" style="font-size: 100px; margin: 0;">{{ $loket1[0]->no_antrian }}</h1>
@@ -58,12 +63,12 @@
               @endif
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-auto custom-col">
             <div class="card text-center mb-3">
               @if (!$loket2->count())
                 <h5>Belum Ada Antrian</h5>
               @else
-                <h5 class="card-header bg-primary text-white">ANTRIAN {{ strtoupper($loket2[0]->loket->deskripsi) }}</h5>
+                <h5 class="card-header bg-primary text-white">{{ strtoupper($loket2[0]->loket->deskripsi) }}</h5>
                 <div class="card-body">
                   <h5 class="card-title">Nomor Antrian</h5>
                   <h1 class="card-text" id="loket2-antrian" style="font-size: 100px; margin: 0;">{{ $loket2[0]->no_antrian }}</h1>
@@ -72,12 +77,54 @@
               @endif
             </div>
           </div>
+          <div class="col-md-auto custom-col">
+            <div class="card text-center mb-3">
+              @if (!$loket3->count())
+                <h5>Belum Ada Antrian</h5>
+              @else
+                <h5 class="card-header bg-primary text-white">{{ strtoupper($loket3[0]->loket->deskripsi) }}</h5>
+                <div class="card-body">
+                  <h5 class="card-title">Nomor Antrian</h5>
+                  <h1 class="card-text" id="loket2-antrian" style="font-size: 100px; margin: 0;">{{ $loket3[0]->no_antrian }}</h1>
+                </div>
+                <h5 class="card-header bg-primary text-white">LOKET {{ $loket3[0]->loket->id }}</h5>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-auto custom-col">
+            <div class="card text-center mb-3">
+              @if (!$loket4->count())
+                <h5>Belum Ada Antrian</h5>
+              @else
+                <h5 class="card-header bg-primary text-white">{{ strtoupper($loket4[0]->loket->deskripsi) }}</h5>
+                <div class="card-body">
+                  <h5 class="card-title">Nomor Antrian</h5>
+                  <h1 class="card-text" id="loket2-antrian" style="font-size: 100px; margin: 0;">{{ $loket4[0]->no_antrian }}</h1>
+                </div>
+                <h5 class="card-header bg-primary text-white">LOKET {{ $loket4[0]->loket->id }}</h5>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-auto custom-col">
+            <div class="card text-center mb-3">
+              @if (!$loket5->count())
+                <h5>Belum Ada Antrian</h5>
+              @else
+                <h5 class="card-header bg-primary text-white">{{ strtoupper($loket5[0]->loket->deskripsi) }}</h5>
+                <div class="card-body">
+                  <h5 class="card-title">Nomor Antrian</h5>
+                  <h1 class="card-text" id="loket2-antrian" style="font-size: 100px; margin: 0;">{{ $loket5[0]->no_antrian }}</h1>
+                </div>
+                <h5 class="card-header bg-primary text-white">LOKET {{ $loket5[0]->loket->id }}</h5>
+              @endif
+            </div>
+          </div>
 
         </div>
 
         <div class="row justify-content-center">
             <div class="col-4">
-                <img src="/img/kapolrestp.png" style="width: 100%; max-width: 237px; height: auto; display: block; margin: auto;" alt="Side Image Left">
+                <img src="/img/kapolrestp.png" style="width: 100%; max-width: 297px; height: auto; display: block; margin: auto;" alt="Side Image Left">
             </div>
             <div class="col-4">
                 <div class="carousel slide carousel-custom" data-bs-ride="carousel" id="carouselExampleInterval">
@@ -100,7 +147,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <img src="/img/kasattp.png" class="static-img" style="width: 100%; max-width: 220px; height: auto; display: block; margin: auto;" alt="Side Image Right">
+                <img src="/img/kasattp.png" class="static-img" style="width: 100%; max-width: 290px; height: auto; display: block; margin: auto;" alt="Side Image Right">
             </div>
               <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
             </div>

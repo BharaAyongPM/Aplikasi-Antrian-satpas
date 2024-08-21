@@ -60,35 +60,54 @@ class AntrianController extends Controller
             return response()->json(['error' => 'Antrian tidak ditemukan'], 404);
         }
 
-        if ($tipe == 'next') {
-            if ($antrian->status === 'pendaftaran') {
-                // Pindah dari pendaftaran ke verifikasi
-                $antrian->update([
-                    'status' => 'verifikasi',
-                    'loket_id' => 2 // Misalnya ID loket verifikasi adalah 2
-                ]);
-            } else if ($antrian->status === 'verifikasi') {
-                // Selesaikan antrian
-                $antrian->update(['status' => 'selesai']);
-            }
-        } else if ($tipe == 'previous') {
-            if ($antrian->status === 'verifikasi') {
-                // Kembali ke pendaftaran dari verifikasi
-                $antrian->update([
-                    'status' => 'pendaftaran',
-                    'loket_id' => 1 // Misalnya ID loket pendaftaran adalah 1
-                ]);
-            } else if ($antrian->status === 'selesai') {
-                // Kembali ke verifikasi jika sebelumnya selesai
-                $antrian->update([
-                    'status' => 'verifikasi',
-                    'loket_id' => 2
-                ]);
-            }
+        switch ($tipe) {
+            case 'next':
+                switch ($antrian->status) {
+                    case 'pendaftaran':
+                        $antrian->update(['status' => 'registrasi', 'loket_id' => 2]);
+                        break;
+                    case 'registrasi':
+                        $antrian->update(['status' => 'foto_cetak', 'loket_id' => 3]);
+                        break;
+                    case 'foto_cetak':
+                        // Jika dari loket 3 (Foto dan Cetak), default ke loket Ujian Teori
+                        $antrian->update(['status' => 'ujian_teori', 'loket_id' => 4]);
+                        break;
+                    case 'ujian_teori':
+                        $antrian->update(['status' => 'ujian_praktek', 'loket_id' => 5]);
+                        break;
+                    case 'ujian_praktek':
+                        $antrian->update(['status' => 'foto_cetak', 'loket_id' => 3]);
+                        break;
+                }
+                break;
+            case 'previous':
+                switch ($antrian->status) {
+                    case 'registrasi':
+                        $antrian->update(['status' => 'pendaftaran', 'loket_id' => 1]);
+                        break;
+                    case 'foto_cetak':
+                        $antrian->update(['status' => 'registrasi', 'loket_id' => 2]);
+                        break;
+                    case 'ujian_teori':
+                        $antrian->update(['status' => 'foto_cetak', 'loket_id' => 3]);
+                        break;
+                    case 'ujian_praktek':
+                        $antrian->update(['status' => 'ujian_teori', 'loket_id' => 4]);
+                        break;
+                }
+                break;
+            case 'finish':
+                // Khusus untuk tombol 'Sudah Cetak' di loket Foto dan Cetak
+                if ($antrian->status === 'foto_cetak') {
+                    $antrian->update(['status' => 'selesai', 'loket_id' => 3]);
+                }
+                break;
         }
 
         return response()->json($antrian);
     }
+
 
     public function getLoketId($loketId)
     {

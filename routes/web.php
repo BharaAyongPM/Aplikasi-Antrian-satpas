@@ -55,13 +55,23 @@ Route::get('/plasma', function () {
             ->orderBy('created_at', 'asc')
             ->get(),
         'loket2' => Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
-            ->where('status', 'verifikasi')
+            ->where('status', 'registrasi')
             ->where('loket_id', 2)
             ->orderBy('created_at', 'asc')
             ->get(),
         'loket3' => Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
-            ->where('status', 0)
+            ->where('status', 'foto_cetak')
             ->where('loket_id', 3)
+            ->orderBy('created_at', 'asc')
+            ->get(),
+        'loket4' => Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
+            ->where('status', 'ujian_teori')
+            ->where('loket_id', 4)
+            ->orderBy('created_at', 'asc')
+            ->get(),
+        'loket5' => Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
+            ->where('status', 'ujian_praktek')
+            ->where('loket_id', 5)
             ->orderBy('created_at', 'asc')
             ->get()
     ]);
@@ -119,6 +129,8 @@ Route::get('/antrian/cetak_antrian_umum', function () {
         'tiket' => Antrian::latest()->where('loket_id', 2)->where('status', 0)->get()
     ]);
 });
+// Contoh definisi route
+Route::post('/dashboard/antrian/getRowId/{id}/finish', 'AntrianController@getRowId')->name('antrian.finish');
 
 Route::get('/dashboard/laporan', [laporanController::class, 'index'])->middleware('auth');
 Route::post('/dashboard/laporan/cetak', [laporanController::class, 'cetak'])->middleware('auth');
@@ -137,20 +149,31 @@ Route::get('/antrian/update', function () {
         ->first();
 
     $loket2 = Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
-        ->where('status', 'verifikasi')
+        ->where('status', 'registrasi')
         ->where('loket_id', 2)
         ->orderBy('created_at', 'asc')
         ->first();
 
-    // $loket3 = Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
-    //     ->where('status', 0)
-    //     ->where('loket_id', 3)
-    //     ->orderBy('created_at', 'asc')
-    //     ->first();
-
+    $loket3 = Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
+        ->where('status', 'foto_cetak')
+        ->where('loket_id', 3)
+        ->orderBy('created_at', 'asc')
+        ->first();
+    $loket4 = Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
+        ->where('status', 'ujian_teori')
+        ->where('loket_id', 4)
+        ->orderBy('created_at', 'asc')
+        ->first();
+    $loket5 = Antrian::whereRaw('day(created_at) = ' . date('d') . ' and month(created_at) = ' . date('m') . ' and year(created_at) = ' . date('Y'))
+        ->where('status', 'ujian_praktek')
+        ->where('loket_id', 5)
+        ->orderBy('created_at', 'asc')
+        ->first();
     return response()->json([
         'loket1' => $loket1 ? $loket1->no_antrian : 'Belum Ada Antrian',
         'loket2' => $loket2 ? $loket2->no_antrian : 'Belum Ada Antrian',
-        // 'loket3' => $loket3 ? $loket3->no_antrian : 'Belum Ada Antrian'
+        'loket3' => $loket3 ? $loket3->no_antrian : 'Belum Ada Antrian',
+        'loket4' => $loket4 ? $loket4->no_antrian : 'Belum Ada Antrian',
+        'loket5' => $loket5 ? $loket5->no_antrian : 'Belum Ada Antrian'
     ]);
 });

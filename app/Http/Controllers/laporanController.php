@@ -35,22 +35,23 @@ class laporanController extends Controller
     public function cetak(Request $request)
     {
         $bulan = $request->post('bulan');
+        $tahun = $request->post('tahun');
 
-        // Mengambil semua loket
-        $loketList = Loket::all();
-
-        // Menghitung jumlah antrian per loket
-        $jumlahPerLoket = $loketList->mapWithKeys(function ($loket) use ($bulan) {
-            return [
-                $loket->nama_loket => Antrian::whereMonth('created_at', '=', $bulan)
-                    ->where('loket_id', $loket->id)
-                    ->count()
-            ];
-        });
+        // Menghitung jumlah antrian untuk pemohon baru ('A') dan perpanjangan ('B')
+        $jumlahBaru = Antrian::whereYear('created_at', '=', $tahun)
+            ->whereMonth('created_at', '=', $bulan)
+            ->where('no_antrian', 'like', 'A%')
+            ->count();
+        $jumlahPerpanjangan = Antrian::whereYear('created_at', '=', $tahun)
+            ->whereMonth('created_at', '=', $bulan)
+            ->where('no_antrian', 'like', 'B%')
+            ->count();
 
         return view('dashboard.laporan.cetak-laporan', [
-            'jumlahPerLoket' => $jumlahPerLoket,
-            'bulan' => $bulan
+            'jumlahBaru' => $jumlahBaru,
+            'jumlahPerpanjangan' => $jumlahPerpanjangan,
+            'bulan' => $bulan,
+            'tahun' => $tahun
         ]);
     }
 }

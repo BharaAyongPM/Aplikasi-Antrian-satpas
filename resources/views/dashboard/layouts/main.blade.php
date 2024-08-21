@@ -14,7 +14,8 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <!-- endinject -->
-    <!-- Layout styles -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="/vendors/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="/vendors/assets/images/favicon.ico" />
@@ -36,7 +37,7 @@
           <!-- partial:partials/_footer.html -->
           <footer class="footer">
             <div class="container-fluid d-flex justify-content-between">
-              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © Puskesmas Kota Serang {{ date('Y') }}</span>
+              <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © Satpas Tanjung Pinang {{ date('Y') }}</span>
             </div>
           </footer>
           <!-- partial -->

@@ -29,24 +29,18 @@
 </head>
 <body>
     <h1 class="title">Laporan Antrian Pemohon</h1>
-    <h2 class="title">Bulan: {{ DateTime::createFromFormat('!m', $bulan)->format('F') }}</h2>
-    <a class="navbar-brand text-primary bg-white p-2 rounded-3" href="#">
-        <img src="{{ asset('/img/logo.svg') }}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
-        SATPAS POLRESTA TANJUNG PINANG 0904<br>
-      </a><br>
+    <h2 class="title">Bulan: {{ DateTime::createFromFormat('!m', $bulan)->format('F') }} {{ $tahun }}</h2>
     <table class="styled-table">
         <thead>
             <tr>
-                <th>Loket Pendaftaran</th>
-                <th>Loket Ujian</th>
-                <th>Loket Validasi</th>
+                <th>Pemohon Baru</th>
+                <th>Pemohon Perpanjangan</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                @foreach ($jumlahPerLoket as $jumlah)
-                    <td>{{ $jumlah }} orang</td>
-                @endforeach
+                <td>{{ $jumlahBaru }} orang</td>
+                <td>{{ $jumlahPerpanjangan }} orang</td>
             </tr>
         </tbody>
     </table>

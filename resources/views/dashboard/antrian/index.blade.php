@@ -56,11 +56,28 @@
                                     </span>
                                     @elseif ($a->status == 'pendaftaran')
                                     <span class="btn btn-sm btn-success ">
-                                        <i class="mdi mdi-info"></i> Verifikasi
+                                        <i class="mdi mdi-info"></i> Pendaftaran
                                     </span>
-                                @elseif ($a->status == 'verifikasi')
+                                @elseif ($a->status == 'registrasi')
                                     <span class="btn btn-sm btn-success ">
-                                        <i class="mdi mdi-info"></i> Verifikasi
+                                        <i class="mdi mdi-info"></i> Input Data
+                                    </span>
+                                    @elseif ($a->status == 'foto_cetak')
+                                    <span class="btn btn-sm btn-success">
+                                        <i class="mdi mdi-info"></i> Foto dan Cetak
+                                    </span>
+                                    <!-- Tombol Sudah Cetak untuk mengakhiri proses -->
+                                    <button class="btn btn-sm btn-primary tombolSelesai" data-id="{{ $a->id }}">
+                                        <i class="mdi mdi-check"></i> Sudah Cetak
+                                    </button>
+
+                                    @elseif ($a->status == 'ujian_teori')
+                                    <span class="btn btn-sm btn-success ">
+                                        <i class="mdi mdi-info"></i> Uji Teori
+                                    </span>
+                                    @elseif ($a->status == 'ujian_praktek')
+                                    <span class="btn btn-sm btn-success ">
+                                        <i class="mdi mdi-info"></i> Uji Praktek
                                     </span>
                                 @else
                                     {{ ucfirst($a->status) }}
@@ -69,7 +86,7 @@
                             <td width="250" class="tombolAksi">
                                 <a href="" class="btn btn-sm btn-danger tombolPrevious" data-tipe="previous" data-id="{{ $a->id }}"><i class="mdi mdi-skip-previous"></i></a>
                                 <a href="javascript:void(0);" class="btn btn-sm btn-success tombolPanggil" data-id="{{ $a->id }}" data-nomor="{{ $a->no_antrian }}" data-loket="{{ $a->loket->deskripsi }}" onclick="panggilDanRefresh(this)"><i class="mdi mdi-bell-ring"></i> Panggil</a>
-                                <a href="" class="btn btn-sm btn-danger tombolNext" data-tipe="next" data-id="{{ $a->id }}"><i class="mdi mdi-skip-next"></i> Sudah</a>
+                                <a href="" class="btn btn-sm btn-danger tombolNext" data-tipe="next" data-id="{{ $a->id }}"><i class="mdi mdi-skip-next"></i> Lanjut</a>
                             </td>
                         </tr>
                         @endforeach
@@ -171,57 +188,32 @@ function speak(text) {
 }
 
     </script>
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Fungsi untuk memperbarui data antrian
-    function fetchAntrian() {
-        const loketId = $('.loket').val(); // Ambil loket ID dari dropdown
-        if (!loketId) return; // Jangan lakukan apa-apa jika tidak ada loket yang dipilih
+   document.addEventListener('DOMContentLoaded', function () {
+    const tombolSelesai = document.querySelectorAll('.tombolSelesai');
 
-        $.ajax({
-            url: `/api/antrian/${loketId}`, // Endpoint API untuk mengambil data
-            type: 'GET',
-            success: function(data) {
-                var rows = '';
-                $.each(data.antrian, function(i, a) {
-                    var statusText = a.status === 0 ? 'Belum' : 'Sudah';
-                    var rowClass = a.status === 1 ? 'table-danger' : '';
-                    rows += `<tr class="${rowClass}" id="rowId${a.id}">
-                                <td width="50">${i + 1}</td>
-                                <td>${a.no_antrian}</td>
-                                <td>${data.loket.nama_loket}</td>
-                                <td>${statusText}</td>
-                                <td width="250" class="tombolAksi">
-                                    <button class="btn btn-sm btn-danger tombolPrevious" data-tipe="previous" data-id="${a.id}"><i class="mdi mdi-skip-previous"></i></button>
-                                    <button class="btn btn-sm btn-success tombolPanggil" onclick="panggilDanRefresh(${a.id}, '${a.no_antrian}', '${data.loket.nama_loket}')" data-id="${a.id}" data-nomor="${a.no_antrian}" data-loket="${data.loket.nama_loket}"><i class="mdi mdi-bell-ring"></i> Panggil</button>
-                                    <button class="btn btn-sm btn-danger tombolNext" data-tipe="next" data-id="${a.id}"><i class="mdi mdi-skip-next"></i></button>
-                                </td>
-                            </tr>`;
-                });
-                $('tbody').html(rows);
-            }
+    tombolSelesai.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const antrianId = this.getAttribute('data-id');
+
+            fetch(`/dashboard/antrian/${antrianId}/finish`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    alert('Status antrian diperbarui menjadi selesai.');
+                    location.reload();  // Refresh halaman untuk menampilkan perubahan status
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
-    }
-
-    // Interval untuk memperbarui antrian setiap 5 detik
-    setInterval(fetchAntrian, 5000);
-
-    // Memanggil fungsi saat dropdown loket berubah
-    $('.loket').change(fetchAntrian);
+    });
 });
 
-// Fungsi untuk memanggil dan refresh
-function panggilDanRefresh(id, nomor, loket) {
-    // Logika untuk panggilan
-    console.log(`Panggilan untuk nomor ${nomor} di loket ${loket}`);
+    </script>
 
-    // Opsional: panggilan ke server untuk logika panggilan
-
-    // Refresh view
-    fetchAntrian(); // Anda dapat memanggil ini untuk memastikan tabel selalu update
-}
-</script> --}}
 
 
 @endsection
